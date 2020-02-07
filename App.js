@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { View, StatusBar, Text, Button, Image, ScrollView } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import FormData from 'form-data';
+import axios from 'axios';
 
 class App extends Component {
 
@@ -20,7 +21,7 @@ class App extends Component {
     profileBackgroundMime: ''
   };
 
-  onSubmit = () => {
+  onSubmit = async () => {
     const { profilePicturePath, profilePictureMime, profileBackgroundPath, profileBackgroundMime } = this.state;
 
     let formData = new FormData();
@@ -34,8 +35,12 @@ class App extends Component {
       name: `profileBackground.${profileBackgroundMime.split('/')[1]}`,
       type: profileBackgroundMime
     })
-    
 
+    const { data } = await axios({
+      method: 'POST',
+      url: 'http://localhost:3000/upload',
+      data: formData
+    })
   }
 
   onPressProfilePicture = async () => {
