@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { View, StatusBar, Text, Button, Image, ScrollView } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import FormData from 'form-data';
 
 class App extends Component {
 
@@ -17,6 +18,24 @@ class App extends Component {
     profilePictureMime: '',
     profileBackgroundPath: '',
     profileBackgroundMime: ''
+  };
+
+  onSubmit = () => {
+    const { profilePicturePath, profilePictureMime, profileBackgroundPath, profileBackgroundMime } = this.state;
+
+    let formData = new FormData();
+    formData.append('image', {
+      uri: profilePicturePath,
+      name: `profilePicture.${profilePictureMime.split('/')[1]}`,
+      type: profilePictureMime
+    })
+    formData.append('image', {
+      uri: profileBackgroundPath,
+      name: `profileBackground.${profileBackgroundMime.split('/')[1]}`,
+      type: profileBackgroundMime
+    })
+    
+
   }
 
   onPressProfilePicture = async () => {
